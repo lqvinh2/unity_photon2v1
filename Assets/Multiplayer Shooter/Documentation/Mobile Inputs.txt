@@ -1,0 +1,7 @@
+To enable mobile Inputs:
+In "Cowboy.cs" There is a variable
+
+"public bool EnableEditorInput = false;"
+
+Set it to true, to enable mobile input in editor however running the game on android 
+will automatically enable moble inputs and disable keyboard inputs.
