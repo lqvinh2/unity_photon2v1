@@ -75,9 +75,6 @@ public class VVCowBoy : MonoBehaviourPun
 
     }
 
-   
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -90,8 +87,6 @@ public class VVCowBoy : MonoBehaviourPun
     {
         if (photonView.IsMine && !DisableInputs)
         {
-
-
             checkInputs();
         }
     }
@@ -101,7 +96,7 @@ public class VVCowBoy : MonoBehaviourPun
         var movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0);
         transform.position += movement * MoveSpeed * Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
@@ -131,14 +126,11 @@ public class VVCowBoy : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            // sprite.flipX = false;
             playerCam.GetComponent<VVCameraFollow2D>().offset = new Vector3(1.3f, 1.53f, 0);
             photonview1.RPC("Flip_Right", RpcTarget.AllBuffered);
-
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            // sprite.flipX = true;
             playerCam.GetComponent<VVCameraFollow2D>().offset = new Vector3(-1.3f, 1.53f, 0);
             photonview1.RPC("Flip_Left", RpcTarget.AllBuffered);
         }
@@ -147,6 +139,16 @@ public class VVCowBoy : MonoBehaviourPun
     void MobileInput()
     {
         transform.position += Mobilemovement * MoveSpeed * Time.deltaTime;
+
+        
+        if (Mobilemovement.x != 0)
+        {
+            PlayAnimation(ANIM_RUN);
+        }
+        else
+        {
+            PlayAnimation(ANIM_IDLE);
+        }
     }
     private void checkInputs()
     {
@@ -278,27 +280,28 @@ public class VVCowBoy : MonoBehaviourPun
         }
     }
 
+    float delayTime = 0.1F;
     public void Jump()
     {
         if (IsGrounded)
         {
             PlayAnimation(ANIM_JUMP);
-            rb.AddForce(new Vector2(0, jumpForce * Time.deltaTime));
+            // rb.AddForce(new Vector2(0, jumpForce * Time.deltaTime));
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
-           
     }
+
+
 
     #region mobile input
     public void On_RightMove()
     {
-        PlayAnimation(ANIM_RUN);
         playerCam.GetComponent<VVCameraFollow2D>().offset = new Vector3(1.3f, 1.53f, 0);
         photonview1.RPC("Flip_Right", RpcTarget.AllBuffered);
         Mobilemovement = new Vector3(1, 0, transform.position.z);
     }
     public void On_LeftMove()
     {
-        PlayAnimation(ANIM_RUN);
         playerCam.GetComponent<VVCameraFollow2D>().offset = new Vector3(-1.3f, 1.53f, 0);
         photonview1.RPC("Flip_Left", RpcTarget.AllBuffered);
         Mobilemovement = new Vector3(-1, 0, transform.position.z);

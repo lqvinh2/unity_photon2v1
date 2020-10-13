@@ -12,6 +12,7 @@ public class VVMobileInputScript : MonoBehaviour
     public GameObject localPlayer;
     public Button btn_right;
     public Button btn_left;
+
     Color color_highlightedColor_origin;
 
     void Start()
@@ -136,5 +137,26 @@ public class VVMobileInputScript : MonoBehaviour
             localPlayer.GetComponent<VVCowBoy>().On_Mobile_ShootRelease();
         }
     }
-  
+
+    public void ShowPlayerInGame()
+    {
+        VVGameManager.instance.cpCanvas.SetActive(true);
+    }
+    public void Exist_ShowPlayerInGame()
+    {
+        VVGameManager.instance.cpCanvas.SetActive(false);
+    }
+
+    public void Show_Panel_Exit()
+    {
+        VVGameManager.instance.ToggleLeaveScreen();
+    }
+
+    public void On_SendChat()
+    {
+        if (localPlayer != null)
+        {
+            localPlayer.GetComponent<VVChatManager>().ChatSendMsg();
+        }
+    }
 }

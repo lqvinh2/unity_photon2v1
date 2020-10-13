@@ -32,18 +32,27 @@ public class VVChatManager : MonoBehaviourPun, IPunObservable
             else
             {
                 player.DisableInputs = false;
+            }   
 
-            }
-
-            if (!DisableSend && ChatInput.isFocused)
+            if (Input.GetKeyDown(KeyCode.Return))
             {
-                if (ChatInput.text != "" && ChatInput.text.Length > 1 && Input.GetKeyDown(KeyCode.Space))
+                ChatSendMsg();
+            }
+        }
+    }
+
+    public void ChatSendMsg()
+    {
+        if (photonView.IsMine)
+        {
+            if (!DisableSend)
+            {
+                if (ChatInput.text != "" && ChatInput.text.Length > 1)
                 {
                     photonView.RPC("SendMsg", RpcTarget.AllBuffered, ChatInput.text);
                     BubbleSpeech.SetActive(true);
                     ChatInput.text = "";
                     DisableSend = true;
-
                 }
             }
         }

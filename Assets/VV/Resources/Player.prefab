@@ -930,7 +930,7 @@ MonoBehaviour:
   PlayerName: {fileID: 1128631641}
   IsGrounded: 0
   DisableInputs: 0
-  jumpForce: 35000
+  jumpForce: 20
   MyName: 
   isMobileInput: 1
 --- !u!114 &1263739150447785103

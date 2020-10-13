@@ -14,6 +14,7 @@ public class VVGameManager : MonoBehaviourPunCallbacks
     public GameObject canvas;
     public GameObject sceneCam;
 
+
     public Text spawnTimer;
     public GameObject respawnUI;
 
@@ -39,16 +40,16 @@ public class VVGameManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         instance = this;
+     
         canvas.SetActive(true);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-    
-
         cp.AddLocalPlayer();
         cp.GetComponent<PhotonView>().RPC("UpdatePlayerList", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
+
     }
 
     // Update is called once per frame
@@ -60,22 +61,30 @@ public class VVGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ToggleLeaveScreen();
-        }
+     
+
+      
 
         if (startRespawn)
         {
             StartRespawn();
         }
 
-        if (Input.GetKey(KeyCode.Tab))
+        if (this.LocalPlayer.GetComponent<VVCowBoy>().isMobileInput == false)
         {
-            cpCanvas.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ToggleLeaveScreen();
+            }
+
+            if (Input.GetKey(KeyCode.Tab))
+            {
+                cpCanvas.SetActive(true);
+            }
+            else
+                cpCanvas.SetActive(false);
         }
-        else
-            cpCanvas.SetActive(false);
+       
 
         pingrate.text = "Ping : " + PhotonNetwork.GetPing();
     }
