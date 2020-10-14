@@ -17,19 +17,15 @@ public class VVHealth : MonoBehaviourPun
     public BoxCollider2D collider;
     public GameObject playerCanvas;
 
+    public GameObject UI_img_player_A_killYou;
+
     public VVCowBoy playerScript;
     public GameObject KillGotKilledText;
 
     // Start is called before the first frame update
     void Start()
     {
-        //Vector2 pos = new Vector2(KillGotKilledText.transform.position.x, KillGotKilledText.transform.position.y);
-
-        //GameObject go = Instantiate(KillGotKilledText, pos, Quaternion.identity);
-        //go.transform.SetParent(GameManager.instance.KillGotKilledFeedBox.transform, false);
-        //go.GetComponent<Text>().text = "You Got Killed by : " + name;
-        //go.GetComponent<Text>().color = Color.red;
-        //Destroy(go, 3);
+       
     }
 
 
@@ -63,6 +59,10 @@ public class VVHealth : MonoBehaviourPun
     [PunRPC]
     public void Revive()
     {
+        // set from VVBullet ->  OnTriggerEnter2D(Collider2D collision) {collision.gameObject.SetActive(false);}
+        gameObject.SetActive(true);
+        gameObject.GetComponent<VVHurtEffect>().ChangeColor_WHITE();
+
         rb.gravityScale = 1;
         collider.enabled = true;
         sr.enabled = true;
@@ -70,16 +70,38 @@ public class VVHealth : MonoBehaviourPun
         fillImage.fillAmount = max_health;
         health = max_health;
     }
+
     public void EnableInputs()
     {
         playerScript.DisableInputs = false;
     }
 
+    enum typeKill
+    {
+        killer,
+        gotKill
+       
+    }
+
+
 
     [PunRPC]
     void YouGotKilledBy(string name)
-    { 
-        InstantiateKillText(Color.red, "You Got Killed by : " + name);
+    {
+        GameObject can = GameObject.Find("Canvas_hole_game");
+
+        Vector2 pos = new Vector2(UI_img_player_A_killYou.transform.position.x, UI_img_player_A_killYou.transform.position.y);
+        GameObject go = Instantiate(UI_img_player_A_killYou, pos, Quaternion.identity);
+        go.transform.SetParent(can.transform, false);
+        go.transform.Find("txt_player_kill_you").GetComponent<Text>().text = name + " kill you !";
+
+        Destroy(go, 3);
+    }
+
+    [PunRPC]
+    void GetScore(string killerName_dieName)
+    {
+        InstantiateKillText(Color.red, killerName_dieName);
     }
 
     [PunRPC]

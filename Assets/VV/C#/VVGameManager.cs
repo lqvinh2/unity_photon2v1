@@ -61,14 +61,11 @@ public class VVGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
-     
-
-      
+        if (LocalPlayer == null)
+            return;
 
         if (startRespawn)
-        {
             StartRespawn();
-        }
 
         if (this.LocalPlayer.GetComponent<VVCowBoy>().isMobileInput == false)
         {
@@ -125,12 +122,15 @@ public class VVGameManager : MonoBehaviourPunCallbacks
 
     public void PlayerRelocation()
     {
-        float randomPosition = Random.Range(-5, 5);
+        float randomPosition = Random.Range(-3, 3);
         LocalPlayer.transform.localPosition = new Vector2(randomPosition, 2);
     }
+
+    public float respawnPlayer_time = 3;
+
     public void EnableRespawn()
     {
-        TimeAmount = 5;
+        TimeAmount = respawnPlayer_time;
         startRespawn = true;
         respawnUI.SetActive(true);
     }

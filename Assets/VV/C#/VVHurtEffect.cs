@@ -80,8 +80,7 @@ public class VVHurtEffect : MonoBehaviourPun
         PhotonNetwork.RaiseEvent((byte)EventCodes.ColorChange, datas, options, sendOptions);
     }
 
-
-    private void ChangeColor_WHITE()
+    public void ChangeColor_WHITE()
     {
         float r = 1f, g = 1f, b = 1f; //white color
 

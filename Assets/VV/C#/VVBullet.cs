@@ -77,13 +77,14 @@ public class VVBullet : MonoBehaviourPun
                 if (target.GetComponent<VVHealth>().health <= 0)
                 {
                     Player GotKilled = target.Owner;
-
                     target.RPC("YouGotKilledBy", GotKilled, killerName);
                     target.RPC("YouKilled", localPlayerObj.GetComponent<PhotonView>().Owner, target.Owner.NickName);
+                    target.RPC("GetScore", RpcTarget.OthersBuffered, killerName + " kill " + target.Owner.NickName);
+                    collision.gameObject.SetActive(false);
                 }
-
             }
-            this.GetComponent<PhotonView>().RPC("Destroy", RpcTarget.AllBuffered);
+            Destroy(this.gameObject);
+            this.GetComponent<PhotonView>().RPC("Destroy", RpcTarget.OthersBuffered);
 
         }
     }

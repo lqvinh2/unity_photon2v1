@@ -125,7 +125,10 @@ public class VVAnimationManager
 
     public void SetFloat(string name, float value)
     {
-        _anim.SetFloat(name, value);
+        if (_anim != null)
+        {
+            _anim.SetFloat(name, value);
+        }
     }
 
     public void TestDeBug_TimeCurrClip()

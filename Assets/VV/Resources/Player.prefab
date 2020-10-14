@@ -1009,6 +1009,7 @@ MonoBehaviour:
   sr: {fileID: 2101942793412962595}
   collider: {fileID: 2101942794251719365}
   playerCanvas: {fileID: 108752965}
+  UI_img_player_A_killYou: {fileID: 2795008276283526767, guid: 318bcb16f8937154891982d4fdf52657, type: 3}
   playerScript: {fileID: 3655301819794816722}
   KillGotKilledText: {fileID: 7663251954134884760, guid: d02346524236a5e429999fe415a95726, type: 3}
 --- !u!114 &1521868334
