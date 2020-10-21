@@ -16,9 +16,16 @@ public class MenuManager : MonoBehaviourPunCallbacks {
     [SerializeField]
     private InputField UserNameInput, CreateRoomInput, JoinRoomInput;
 
+    public static MenuManager instance = null;
+
+    public string room_creator = "";
 
     void Awake()
     {
+        instance = this;
+
+        DontDestroyOnLoad(this.gameObject);
+
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -43,8 +50,8 @@ public class MenuManager : MonoBehaviourPunCallbacks {
 
     public void OnClick_CreateNameBtn()
     {
-       
         PhotonNetwork.NickName = UserNameInput.text;
+        room_creator = UserNameInput.text;
         UserNameScreen.SetActive(false);
         ConnectScreen.SetActive(true);
     }

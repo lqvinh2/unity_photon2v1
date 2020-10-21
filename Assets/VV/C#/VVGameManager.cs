@@ -11,6 +11,8 @@ public class VVGameManager : MonoBehaviourPunCallbacks
     public GameObject cpCanvas;
     public VVConnectedPlayer cp;
     public GameObject playerPrefab;
+
+
     public GameObject canvas;
     public GameObject sceneCam;
 
@@ -138,9 +140,9 @@ public class VVGameManager : MonoBehaviourPunCallbacks
     {
         float randomValue = Random.Range(-5, 5);
         PhotonNetwork.Instantiate(playerPrefab.name, new Vector2(playerPrefab.transform.position.x * randomValue, playerPrefab.transform.position.y), Quaternion.identity, 0);
+       
         canvas.SetActive(false);
         sceneCam.SetActive(false);
-        //MobileInput.SetActive(true);
     }
 
     public override void OnPlayerEnteredRoom(Player player)

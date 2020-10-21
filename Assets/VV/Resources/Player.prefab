@@ -920,6 +920,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c9e5b3a9707efb45a2ca68b8031ee05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint_item: {fileID: 0}
+  itemPrefab: {fileID: 898369534201120921, guid: bdd55f4b0b6c62e43bcc446176f8fac7, type: 3}
   MoveSpeed: 5
   playerCam: {fileID: 2101942793521527533}
   sprite: {fileID: 2101942793412962595}
@@ -932,7 +934,8 @@ MonoBehaviour:
   DisableInputs: 0
   jumpForce: 20
   MyName: 
-  isMobileInput: 1
+  isMobileInput: 0
+  OKA: 0
 --- !u!114 &1263739150447785103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,6 +1031,7 @@ MonoBehaviour:
   BubbleSpeech: {fileID: 1504533476}
   ChatText: {fileID: 1968837148}
   player: {fileID: 3655301819794816722}
+  ChatInput: {fileID: 0}
 --- !u!114 &8991037198461069228
 MonoBehaviour:
   m_ObjectHideFlags: 0

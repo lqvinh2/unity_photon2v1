@@ -17,8 +17,13 @@ public class VVMenuManager : MonoBehaviourPunCallbacks
 
     private InputField UserNameInput, CreateRoomInput, JoinRoomInput;
 
+    public static VVMenuManager instance = null;
+
+    public string room_creator = "";
+
     void Awake()
     {
+        instance = this;
         UserNameScreen.SetActive(false);
         ConnectScreen.SetActive(false);
         CreateUserNameButton.SetActive(false);
@@ -83,6 +88,7 @@ public class VVMenuManager : MonoBehaviourPunCallbacks
     {
 
         PhotonNetwork.NickName = UserNameInput.text;
+      
         UserNameScreen.SetActive(false);
         ConnectScreen.SetActive(true);
        
@@ -109,6 +115,7 @@ public class VVMenuManager : MonoBehaviourPunCallbacks
     }
     public void Onclick_CreateRoom()
     {
+        room_creator = UserNameInput.text;
         PhotonNetwork.CreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, null);
     }
     #endregion UIMethods

@@ -52,6 +52,8 @@ MonoBehaviour:
   - Flip_Left
   - Flip_Right
   - GetScore
+  - Destroy1
+  - CollectItem
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

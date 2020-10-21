@@ -13,7 +13,7 @@ public class VVChatManager : MonoBehaviourPun, IPunObservable
     public Text ChatText;
 
     public VVCowBoy player;
-    InputField ChatInput;
+    public InputField ChatInput;
     private bool DisableSend;
 
     void Awake()

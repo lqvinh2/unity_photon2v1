@@ -5,15 +5,30 @@ using Photon.Pun;
 using UnityEngine.UI;
 using System;
 
+
+public class ItemInfo
+{
+    public string name = "";
+    public int damage = 10;
+}
+
+
 public class VVCowBoy : MonoBehaviourPun
 {
+
     #region variable
+
+    public GameObject spawnPoint_item;
+    public GameObject itemPrefab;
+
     VVAnimationManager _anim = new VVAnimationManager();
     public float MoveSpeed = 5;
     public GameObject playerCam;
     public SpriteRenderer sprite;
     public PhotonView photonview1;
     //private bool AllowMoving = true;
+
+    public List<ItemInfo> listItemOnHand;
 
     public GameObject BulletePrefab;
     public Transform BulleteSpawnPointRight;
@@ -49,11 +64,13 @@ public class VVCowBoy : MonoBehaviourPun
     const float anim_float_run = 1;
     const float anim_float_shoot = 3;
     const float anim_float_jump = 2;
-
+   
     void Awake()
     {
         if (photonView.IsMine)
         {
+          
+
             VVGameManager.instance.LocalPlayer = this.gameObject;
             _anim.SetUpAnimator(this.gameObject.transform.Find("Cowboy").GetComponent<Animator>());
       
@@ -66,6 +83,8 @@ public class VVCowBoy : MonoBehaviourPun
             PlayerName.text = "You : " + PhotonNetwork.NickName + "|| TEAM [" + PhotonNetwork.LocalPlayer.CustomProperties["Team"] + "]";
             PlayerName.color = Color.green;
             MyName = PhotonNetwork.NickName;
+
+            listItemOnHand = new List<ItemInfo>();
         }
         else
         {
@@ -83,12 +102,47 @@ public class VVCowBoy : MonoBehaviourPun
     }
 
     // Update is called once per frame
+    public bool OKA = false;
+    float timeSpawnItem = 0;
     void Update()
     {
         if (photonView.IsMine && !DisableInputs)
         {
             checkInputs();
+
+            // test
+
+            if (VVMenuManager.instance.room_creator != "")
+            {
+                timeSpawnItem = timeSpawnItem - Time.deltaTime;
+                if (timeSpawnItem <= 0)
+                {
+                    timeSpawnItem = 3;
+                    StartCoroutine("SpawnItem");
+                }
+          
+            }
+
+            if (OKA)
+            {
+                OKA = false;
+                foreach (var item in listItemOnHand)
+                {
+                    this.gameObject.GetComponent<VVChatManager>().ChatInput.text += item.name;
+                }
+            }
         }
+    }
+
+    //  
+
+    IEnumerator SpawnItem()
+    {
+        yield return new WaitForSeconds(0.1F);
+
+        float randomPosition = UnityEngine.Random.Range(-10, 10);
+        PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(randomPosition, -0.51F, -1.370586F) , Quaternion.identity, 0);
+
     }
 
     void PC_Input()
