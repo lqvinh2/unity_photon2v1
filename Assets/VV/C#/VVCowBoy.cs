@@ -47,12 +47,11 @@ public class VVCowBoy : MonoBehaviourPun
 
     Vector3 Mobilemovement = Vector3.zero;
 
-    
+
     const string ANIM_IDLE = "Idle";
     const string ANIM_RUN = "run";
     const string ANIM_JUMP = "jump";
     const string ANIM_SHOOT = "shoot";
-
 
     #endregion variable
 
@@ -85,6 +84,7 @@ public class VVCowBoy : MonoBehaviourPun
             MyName = PhotonNetwork.NickName;
 
             listItemOnHand = new List<ItemInfo>();
+           
         }
         else
         {
@@ -117,10 +117,9 @@ public class VVCowBoy : MonoBehaviourPun
                 timeSpawnItem = timeSpawnItem - Time.deltaTime;
                 if (timeSpawnItem <= 0)
                 {
-                    timeSpawnItem = 3;
+                    timeSpawnItem = 15;
                     StartCoroutine("SpawnItem");
                 }
-          
             }
 
             if (OKA)
@@ -128,7 +127,7 @@ public class VVCowBoy : MonoBehaviourPun
                 OKA = false;
                 foreach (var item in listItemOnHand)
                 {
-                    this.gameObject.GetComponent<VVChatManager>().ChatInput.text += item.name;
+                    this.gameObject.GetComponent<VVChatManager>().ChatInput.text = item.name;
                 }
             }
         }

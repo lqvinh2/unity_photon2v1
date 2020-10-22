@@ -54,6 +54,7 @@ MonoBehaviour:
   - GetScore
   - Destroy1
   - CollectItem
+  - BroadcastAllPlayerItemPicked
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

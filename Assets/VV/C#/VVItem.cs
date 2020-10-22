@@ -9,8 +9,13 @@ public class VVItem : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (photonView.IsMine)
+        {
+            // StartCoroutine(destroyBullete());
+        }
     }
+
+   
 
     // Update is called once per frame
     void Update()
@@ -23,40 +28,83 @@ public class VVItem : MonoBehaviourPun
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        if (!photonView.IsMine)
-            return;
-
         PhotonView player = collision.gameObject.GetComponent<PhotonView>();
-
-        if (player != null && player.tag.ToLower() == "player")
+        if (player.IsMine && player.tag.ToLower() == "player")
         {
-      
+            // this.gameObject.SetActive(false);
             localPlayerGotItem = collision.gameObject;
-
             namePlayerGotItem = localPlayerGotItem.GetComponent<VVCowBoy>().MyName;
             this.gameObject.name = "item_" + (localPlayerGotItem.GetComponent<VVCowBoy>().listItemOnHand.Count + 1).ToString();
 
-            Destroy(this.gameObject);
-            this.GetComponent<PhotonView>().RPC("CollectItem", RpcTarget.AllBuffered);
+
+            // prevent pick up item in case : at the same time 2 player pick item
+            //                                we just need decide only one can pick
+            this.GetComponent<PhotonView>().RPC("BroadcastAllPlayerItemPicked", RpcTarget.AllBuffered, this.gameObject.name, namePlayerGotItem);
+            StartCoroutine(destroyItem(gameObject.name));
         }
+
     }
 
     [PunRPC]
-    void CollectItem()
+    void BroadcastAllPlayerItemPicked(string itemName, string namePlayerPickItem)
     {
-        Destroy(this.gameObject);
-
-        if (localPlayerGotItem)
+        if (VVGameManager.instance)
         {
-            ItemInfo itemInfo = new ItemInfo();
-            itemInfo.name = this.gameObject.name;
-            localPlayerGotItem.GetComponent<VVCowBoy>().OKA = true;
-            localPlayerGotItem.GetComponent<VVCowBoy>().listItemOnHand.Add(itemInfo);
-        }
+            var dic = VVGameManager.instance.itemName_pick_by_ListPlayer;
 
+            if (dic.ContainsKey(itemName))
+            {
+                var players = dic[itemName];
+                players.Add(namePlayerPickItem);
+
+                dic[itemName] = players;
+            }
+            else
+            {
+                List<string> tt = new List<string>();
+                tt.Add(namePlayerPickItem);
+                dic.Add(itemName, tt);
+            }
+        }
     }
 
+    float DestroyTime = 10;
+    IEnumerator destroyItem(string itemName)
+    {
+        yield return new WaitForSeconds(DestroyTime);
+        this.GetComponent<PhotonView>().RPC("Destroy", RpcTarget.AllBuffered, itemName);
+    }
+
+
+    [PunRPC]
+    void Destroy(string itemName)
+    {
+
+        if (VVGameManager.instance)
+        {
+            var dic = VVGameManager.instance.itemName_pick_by_ListPlayer;
+
+            if (dic.ContainsKey(itemName))
+            {
+                var players = dic[itemName];
+                dic.Remove(itemName);
+                string namePlayerLocal = localPlayerGotItem.GetComponent<VVCowBoy>().MyName;
+                string namePlayerPickUpFirst = players[0];
+
+                if (namePlayerLocal == namePlayerPickUpFirst)
+                {
+                    ItemInfo itemInfo = new ItemInfo();
+                    itemInfo.name = this.gameObject.name;
+                    localPlayerGotItem.GetComponent<VVCowBoy>().OKA = true;
+                    localPlayerGotItem.GetComponent<VVCowBoy>().listItemOnHand.Add(itemInfo);
+                }
+
+            }
+        
+        }
+
+        Destroy(this.gameObject);
+    }
 
 
 

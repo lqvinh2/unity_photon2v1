@@ -42,7 +42,7 @@ public class VVGameManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         instance = this;
-     
+        itemName_pick_by_ListPlayer = new Dictionary<string, List<string>>();
         canvas.SetActive(true);
     }
 
@@ -53,7 +53,7 @@ public class VVGameManager : MonoBehaviourPunCallbacks
         cp.GetComponent<PhotonView>().RPC("UpdatePlayerList", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
 
     }
-
+    public Dictionary<string, List<string>> itemName_pick_by_ListPlayer;
     // Update is called once per frame
     void Update()
     {

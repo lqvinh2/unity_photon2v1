@@ -38,7 +38,6 @@ public class VVBullet : MonoBehaviourPun
         else
         {
             transform.Translate(Vector2.left * MoveSpeed * Time.deltaTime);
-
         }
     }
 
@@ -53,6 +52,7 @@ public class VVBullet : MonoBehaviourPun
     {
         Destroy(this.gameObject);
     }
+
     [PunRPC]
     public void ChangeDirection()
     {
