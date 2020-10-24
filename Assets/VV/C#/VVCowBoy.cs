@@ -30,9 +30,15 @@ public class VVCowBoy : MonoBehaviourPun
 
     public List<ItemInfo> listItemOnHand;
 
-    public GameObject BulletePrefab;
+    public List<GameObject> BulletePrefab = new List<GameObject>();
+
+    private GameObject current_bullet;
+
     public Transform BulleteSpawnPointRight;
     public Transform BulleteSpawnPointleft;
+
+
+
 
     public Text PlayerName;
     public bool IsGrounded = false;
@@ -84,7 +90,8 @@ public class VVCowBoy : MonoBehaviourPun
             MyName = PhotonNetwork.NickName;
 
             listItemOnHand = new List<ItemInfo>();
-           
+
+            current_bullet = BulletePrefab[0];
         }
         else
         {
@@ -110,18 +117,6 @@ public class VVCowBoy : MonoBehaviourPun
         {
             checkInputs();
 
-            // test
-
-            if (VVMenuManager.instance.room_creator != "")
-            {
-                timeSpawnItem = timeSpawnItem - Time.deltaTime;
-                if (timeSpawnItem <= 0)
-                {
-                    timeSpawnItem = 15;
-                    StartCoroutine("SpawnItem");
-                }
-            }
-
             if (OKA)
             {
                 OKA = false;
@@ -135,19 +130,14 @@ public class VVCowBoy : MonoBehaviourPun
 
     //  
 
-    IEnumerator SpawnItem()
-    {
-        yield return new WaitForSeconds(0.1F);
-
-        float randomPosition = UnityEngine.Random.Range(-10, 10);
-        PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(randomPosition, -0.51F, -1.370586F) , Quaternion.identity, 0);
-
-    }
+ 
 
     void PC_Input()
     {
         var movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0);
         transform.position += movement * MoveSpeed * Time.deltaTime;
+
+
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -187,6 +177,21 @@ public class VVCowBoy : MonoBehaviourPun
             playerCam.GetComponent<VVCameraFollow2D>().offset = new Vector3(-1.3f, 1.53f, 0);
             photonview1.RPC("Flip_Left", RpcTarget.AllBuffered);
         }
+
+        // change bullet
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Debug.Log("change bullet 1");
+            current_bullet = BulletePrefab[0];
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Debug.Log("change bullet 2");
+            current_bullet = BulletePrefab[1];
+        }
+
     }
 
     void MobileInput()
@@ -286,13 +291,13 @@ public class VVCowBoy : MonoBehaviourPun
     {
         if (sprite.flipX == false)
         {
-            GameObject bullete = PhotonNetwork.Instantiate(BulletePrefab.name, new Vector2(BulleteSpawnPointRight.position.x, BulleteSpawnPointRight.position.y), Quaternion.identity, 0);
+            GameObject bullete = PhotonNetwork.Instantiate(current_bullet.name, new Vector2(BulleteSpawnPointRight.position.x, BulleteSpawnPointRight.position.y), Quaternion.identity, 0);
             bullete.GetComponent<VVBullet>().localPlayerObj = this.gameObject;
         }
 
         if (sprite.flipX == true)
         {
-            GameObject bullete = PhotonNetwork.Instantiate(BulletePrefab.name, new Vector2(BulleteSpawnPointleft.position.x, BulleteSpawnPointleft.position.y), Quaternion.identity, 0);
+            GameObject bullete = PhotonNetwork.Instantiate(current_bullet.name, new Vector2(BulleteSpawnPointleft.position.x, BulleteSpawnPointleft.position.y), Quaternion.identity, 0);
             bullete.GetComponent<VVBullet>().localPlayerObj = this.gameObject;
             bullete.GetComponent<PhotonView>().RPC("ChangeDirection", RpcTarget.AllBuffered);
         }

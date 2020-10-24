@@ -40,7 +40,8 @@ public class VVItem : MonoBehaviourPun
             // prevent pick up item in case : at the same time 2 player pick item
             //                                we just need decide only one can pick
             this.GetComponent<PhotonView>().RPC("BroadcastAllPlayerItemPicked", RpcTarget.AllBuffered, this.gameObject.name, namePlayerGotItem);
-            StartCoroutine(destroyItem(gameObject.name));
+            //StartCoroutine(destroyItem(gameObject.name));
+            this.GetComponent<PhotonView>().RPC("Destroy", RpcTarget.AllBuffered, gameObject.name);
         }
 
     }
@@ -65,10 +66,10 @@ public class VVItem : MonoBehaviourPun
                 tt.Add(namePlayerPickItem);
                 dic.Add(itemName, tt);
             }
-        }
+         }
     }
 
-    float DestroyTime = 10;
+    float DestroyTime = 10F;
     IEnumerator destroyItem(string itemName)
     {
         yield return new WaitForSeconds(DestroyTime);
@@ -79,31 +80,44 @@ public class VVItem : MonoBehaviourPun
     [PunRPC]
     void Destroy(string itemName)
     {
-
-        if (VVGameManager.instance)
+        try
         {
-            var dic = VVGameManager.instance.itemName_pick_by_ListPlayer;
-
-            if (dic.ContainsKey(itemName))
+            if (VVGameManager.instance)
             {
-                var players = dic[itemName];
-                dic.Remove(itemName);
-                string namePlayerLocal = localPlayerGotItem.GetComponent<VVCowBoy>().MyName;
-                string namePlayerPickUpFirst = players[0];
+                 var dic = VVGameManager.instance.itemName_pick_by_ListPlayer;
 
-                if (namePlayerLocal == namePlayerPickUpFirst)
+                if (dic.ContainsKey(itemName))
                 {
-                    ItemInfo itemInfo = new ItemInfo();
-                    itemInfo.name = this.gameObject.name;
-                    localPlayerGotItem.GetComponent<VVCowBoy>().OKA = true;
-                    localPlayerGotItem.GetComponent<VVCowBoy>().listItemOnHand.Add(itemInfo);
+                    var players = dic[itemName];
+                    dic.Remove(itemName);
+
+                    // cùng time 2 Player cùng lúc nhận được item thì biến này sẽ khác null 
+                    // lúc này cần xử lý lấy thằng đầu tiên trong mảng trước.
+                    if (localPlayerGotItem)
+                    {
+                        string namePlayerLocal = localPlayerGotItem.GetComponent<VVCowBoy>().MyName;
+                        string namePlayerPickUpFirst = players[0];
+
+                        if (namePlayerLocal == namePlayerPickUpFirst)
+                        {
+                            ItemInfo itemInfo = new ItemInfo();
+                            itemInfo.name = this.gameObject.name;
+                            localPlayerGotItem.GetComponent<VVCowBoy>().OKA = true;
+                            localPlayerGotItem.GetComponent<VVCowBoy>().listItemOnHand.Add(itemInfo);
+                        }
+                    }
                 }
 
             }
-        
-        }
 
-        Destroy(this.gameObject);
+            Destroy(this.gameObject);
+        }
+        catch 
+        {
+
+          
+        }
+       
     }
 
 

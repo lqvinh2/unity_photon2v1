@@ -926,7 +926,9 @@ MonoBehaviour:
   playerCam: {fileID: 2101942793521527533}
   sprite: {fileID: 2101942793412962595}
   photonview1: {fileID: 1263739150447785103}
-  BulletePrefab: {fileID: 8341825374112244600, guid: 177951164d1503140bdbe6afca497416, type: 3}
+  BulletePrefab:
+  - {fileID: 8341825374112244600, guid: 177951164d1503140bdbe6afca497416, type: 3}
+  - {fileID: 8341825374112244600, guid: 89e1f48dc7e1f2d449ecb891e0bbed2b, type: 3}
   BulleteSpawnPointRight: {fileID: 632721350}
   BulleteSpawnPointleft: {fileID: 1116488664}
   PlayerName: {fileID: 1128631641}
