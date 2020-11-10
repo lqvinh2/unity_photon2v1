@@ -125,19 +125,19 @@ public class VVCowBoy : MonoBehaviourPun
                     this.gameObject.GetComponent<VVChatManager>().ChatInput.text = item.name;
                 }
             }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                this.gameObject.GetComponent<VVChatManager>().ChatInput.text = "MasterClient";
+            }
+
         }
     }
-
-    //  
-
- 
 
     void PC_Input()
     {
         var movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0);
         transform.position += movement * MoveSpeed * Time.deltaTime;
-
-
 
         if (Input.GetKeyDown(KeyCode.Space))
         {

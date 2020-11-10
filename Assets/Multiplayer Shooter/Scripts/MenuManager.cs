@@ -25,7 +25,7 @@ public class MenuManager : MonoBehaviourPunCallbacks {
         instance = this;
 
         DontDestroyOnLoad(this.gameObject);
-
+        
         PhotonNetwork.ConnectUsingSettings();
     }
 
