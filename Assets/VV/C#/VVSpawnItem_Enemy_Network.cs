@@ -5,14 +5,14 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 
-public class VVSpawnItemNetwork : MonoBehaviourPunCallbacks
+public class VVSpawnItem_Enemy_Network : MonoBehaviourPunCallbacks
 {
-
+    
     public GameObject itemPrefab;
     float timeSpawnItem = 0;
     float timeSpawnENemy1 = 0;
     readonly float max_timeSpawnItem = 2;
-    readonly float max_timeSpawnEnemy1 = 50;
+    readonly float max_timeSpawnEnemy1 = 10;
 
     public GameObject enemy1_Prefab;
 
@@ -48,19 +48,21 @@ public class VVSpawnItemNetwork : MonoBehaviourPunCallbacks
         }
     }
 
+    // spawn item hay enemy thi` du`ng PhotonNetwork.InstantiateRoomObject
     IEnumerator SpawnItem()
     {
         yield return new WaitForSeconds(0.1F);
 
         float randomPosition = UnityEngine.Random.Range(-10, 10);
-        PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(randomPosition, -0.51F, -1.370586F), Quaternion.identity, 0);
+        //PhotonNetwork.Instantiate(itemPrefab.name, new Vector3(randomPosition, -0.51F, -1.370586F), Quaternion.identity, 0);
+        PhotonNetwork.InstantiateRoomObject(itemPrefab.name, new Vector3(randomPosition, -0.51F, -1.370586F), Quaternion.identity, 0);
     }
 
     IEnumerator SpawnEnemy1()
     {
         yield return new WaitForSeconds(0.1F);
         float randomPosition = UnityEngine.Random.Range(-10, 10);
-        PhotonNetwork.Instantiate(enemy1_Prefab.name, new Vector3(randomPosition, -0.51F, -1.370586F), Quaternion.identity, 0);
+        PhotonNetwork.InstantiateRoomObject(enemy1_Prefab.name, new Vector3(randomPosition, -0.51F, -1.370586F), Quaternion.identity);
     }
 
 }

@@ -52,6 +52,11 @@ public class VVMenuManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(1);
     }
 
+    public override void OnLeftRoom()
+    {
+
+    }
+
     void AssignTeam()
     {
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
@@ -113,10 +118,13 @@ public class VVMenuManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom(JoinRoomInput.text, ro, TypedLobby.Default);
 
     }
+
+    // https://forum.photonengine.com/discussion/14619/how-do-not-destroy-objects-when-the-owner-exit
     public void Onclick_CreateRoom()
     {
+        // CleanupCacheOnLeave = false when client Leaving game will not destroy gameObject of that Client
         room_creator = UserNameInput.text;
-        PhotonNetwork.CreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, null);
+        PhotonNetwork.CreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4}, null);
     }
     #endregion UIMethods
 }

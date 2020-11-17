@@ -74,7 +74,8 @@ public class VVCowBoy : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-          
+
+     
 
             VVGameManager.instance.LocalPlayer = this.gameObject;
             _anim.SetUpAnimator(this.gameObject.transform.Find("Cowboy").GetComponent<Animator>());
@@ -389,5 +390,10 @@ public class VVCowBoy : MonoBehaviourPun
         Mobilemovement = new Vector3(0, 0, transform.position.z);
     }
     #endregion
+
+
+    public float DestroyTime = 0.5f;
+
+
 
 }

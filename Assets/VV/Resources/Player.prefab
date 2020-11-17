@@ -938,6 +938,7 @@ MonoBehaviour:
   MyName: 
   isMobileInput: 0
   OKA: 0
+  DestroyTime: 0.5
 --- !u!114 &1263739150447785103
 MonoBehaviour:
   m_ObjectHideFlags: 0

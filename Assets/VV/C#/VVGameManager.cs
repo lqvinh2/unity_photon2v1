@@ -102,9 +102,25 @@ public class VVGameManager : MonoBehaviourPunCallbacks
 
     public void btn_press_LeaveRoom()
     {
+        // StartCoroutine(IEDestroyCowBoy());
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel(0);
     }
+
+
+    //IEnumerator IEDestroyCowBoy()
+    //{
+    //    yield return new WaitForSeconds(0.5F);
+    //    this.GetComponent<PhotonView>().RPC("DestroyCowBoy", RpcTarget.AllBuffered);
+    //}
+
+    //[PunRPC]
+    //void DestroyCowBoy()
+    //{
+    //    Destroy(this.gameObject);
+
+    //}
+
 
     public void StartRespawn()
     {
@@ -139,8 +155,10 @@ public class VVGameManager : MonoBehaviourPunCallbacks
     public void SpawnPlayer()
     {
         float randomValue = Random.Range(-5, 5);
-        PhotonNetwork.Instantiate(playerPrefab.name, new Vector2(playerPrefab.transform.position.x * randomValue, playerPrefab.transform.position.y), Quaternion.identity, 0);
-       
+         PhotonNetwork.Instantiate(playerPrefab.name, new Vector2(playerPrefab.transform.position.x * randomValue, playerPrefab.transform.position.y), Quaternion.identity, 0);
+
+        //PhotonNetwork.InstantiateRoomObject(playerPrefab.name, new Vector2(playerPrefab.transform.position.x * randomValue, playerPrefab.transform.position.y), Quaternion.identity, 0);
+
         canvas.SetActive(false);
         sceneCam.SetActive(false);
     }

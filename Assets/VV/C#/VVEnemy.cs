@@ -8,7 +8,7 @@ using Photon.Realtime;
 using UnityEngine.UI;
 
 
-public class VVEnemy : MonoBehaviourPunCallbacks
+public class VVEnemy : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
 
     [SerializeField]
@@ -16,6 +16,16 @@ public class VVEnemy : MonoBehaviourPunCallbacks
 
     [SerializeField]
     float frequnce = 6;
+
+    public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
+    {
+        Debug.Log("OnOwnershipRequest");
+    }
+
+    public void OnOwnershipTransfered(PhotonView targetView, Player previousOwner)
+    {
+        Debug.Log("OnOwnershipTransfered");
+    }
 
     // Start is called before the first frame update
     void Start()
